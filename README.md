@@ -15,5 +15,6 @@ Schéma du cicuit
 
 ![image](https://user-images.githubusercontent.com/83223386/119145242-bced9d80-ba49-11eb-9944-fb5659ae9df8.png)
 
+![image](https://user-images.githubusercontent.com/83223386/119145329-d1ca3100-ba49-11eb-93b4-868cdc63e2b4.png)
 
 
