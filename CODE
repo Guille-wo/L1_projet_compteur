@@ -1,0 +1,153 @@
+#include <LiquidCrystal.h>                                                                                                           
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int Trigger_droite = 10;
+int Echo_droite = 9;
+int Trigger_gauche = 8;
+int Echo_gauche = 7;
+int speakerPin = 6;
+
+int droite = 0;
+int droite_compte = 0;
+int droite_actuel = 0;
+int droite_precedent = 0;
+
+int gauche = 0;
+int gauche_compte = 0;
+int gauche_actuel = 0;
+int gauche_precedent = 0;
+
+int gauche_duree,gauche_distance;
+int droite_duree, droite_distance;
+
+int compte = 0;
+String boutons = "";
+
+void setup() {
+  lcd.begin(16,2);
+  lcd.setCursor(0,0);          
+  lcd.print("CAPACITE TTL 2");
+  lcd.setCursor(2,1);            
+  lcd.print("QUANTITE: "); 
+  pinMode(Trigger_droite, OUTPUT);
+  pinMode(Echo_droite, INPUT);
+  pinMode(Trigger_gauche, OUTPUT);
+  pinMode(Echo_gauche, INPUT);
+  pinMode(speakerPin, OUTPUT);
+  Serial.begin(9600);
+
+}
+
+void loop(){
+delay(100);
+
+    digitalWrite (Trigger_droite, HIGH);
+    delayMicroseconds (1000);
+    digitalWrite (Trigger_droite, LOW);
+    droite_duree = pulseIn (Echo_droite, HIGH);
+    droite_distance = (droite_duree/2) / 29.1;
+    
+    digitalWrite (Trigger_gauche, HIGH);
+    delayMicroseconds (1000);
+    digitalWrite (Trigger_gauche, LOW);
+    gauche_duree = pulseIn (Echo_gauche, HIGH);
+    gauche_distance = (gauche_duree/2) / 29.1;
+
+  if (gauche_distance < 10) { 
+      gauche = HIGH;
+    }
+ else {
+      gauche = LOW;
+    }  
+ if (droite_distance < 10) { 
+     droite = HIGH;
+    }
+ else {
+      droite = LOW;
+    } 
+    
+if (gauche ==  HIGH) { 
+gauche_actuel = 1;
+}
+else {
+gauche_actuel = 0;
+}
+if (droite ==  HIGH) { 
+droite_actuel = 1;
+}
+else {
+droite_actuel = 0;
+}
+
+if(droite_actuel != droite_precedent){
+if(droite_actuel == 1){
+droite_compte = droite_compte + 1;
+}
+}
+
+if(gauche_actuel != gauche_precedent){
+if(gauche_actuel == 1){
+gauche_compte = gauche_compte + 1;
+
+}
+}
+
+////////////////////////////////////////////////////////////////
+if (gauche == HIGH && droite == LOW && boutons == "")
+{
+boutons="ENTRANT";
+}
+if (gauche == HIGH && droite == HIGH && boutons == "ENTRANT")
+{
+boutons="entre_moitie";
+}
+if (gauche == LOW && droite == HIGH && boutons == "entre_moitie")
+{
+boutons="presque_dedans";
+}
+if (gauche == LOW && droite == LOW && boutons == "presque_dedans")
+{
+boutons="";
+compte=compte+1;
+Serial.print("COMPTE PLUS UN: ");
+Serial.println(compte);
+lcd.setCursor(12,1);
+lcd.print(compte);    
+}
+if (compte > 2)
+{
+ digitalWrite(speakerPin, HIGH); 
+  }
+if (compte <= 2)
+{
+ digitalWrite(speakerPin, LOW); 
+  }
+///////////////////////////////////////////////
+if (gauche == LOW && droite == HIGH && boutons == "")
+{
+boutons="SORTI";
+}
+if (gauche == HIGH && droite == HIGH && boutons == "SORTI")
+{
+boutons="sorti_moitie";
+}
+if (gauche == HIGH && droite == LOW && boutons == "sorti_moitie")
+{
+boutons="presque_sorti";
+}
+if (gauche == LOW && droite == LOW && boutons == "presque_sorti")
+{
+boutons="";
+compte=compte-1;
+  if (compte <0)
+{
+ compte=0; 
+  }
+Serial.print("COMPTE MOINS UN: ");
+Serial.println(compte);
+lcd.setCursor(12,1);
+lcd.print(compte);
+}
+Serial.println(boutons);
+gauche_precedent = gauche_actuel;
+droite_precedent = droite_actuel;
+}
