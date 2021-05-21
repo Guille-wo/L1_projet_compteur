@@ -13,8 +13,7 @@ Schéma du cicuit
 
 
 
-![image](https://user-images.githubusercontent.com/83223386/119145096-99c2ee00-ba49-11eb-8e08-ea4ec54e85b2.png)
+![image](https://user-images.githubusercontent.com/83223386/119145242-bced9d80-ba49-11eb-9944-fb5659ae9df8.png)
 
-![image](https://user-images.githubusercontent.com/83223386/119145128-a34c5600-ba49-11eb-96f5-0743600833cd.png)
 
 
